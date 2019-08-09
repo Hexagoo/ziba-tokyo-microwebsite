@@ -16,4 +16,3 @@ If you discover a security vulnerability within micro-website, please contact us
 ## About the project
 During my internship at Ziba Tokyo, we worked on a project which help clients to get easy access to the documents made by Ziba Tokyo.
 Such as PDF, Excel, img, Word...etc.
-## About the project
