@@ -1,6 +1,6 @@
-
 ###> symfony/framework-bundle ###
 .env
+.DS_Store
 /public/bundles/
 /public/upload/
 /var/
