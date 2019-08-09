@@ -1,6 +1,7 @@
 ###> symfony/framework-bundle ###
 .env
 .DS_Store
+.htaccess
 /public/bundles/
 /public/upload/
 /var/
