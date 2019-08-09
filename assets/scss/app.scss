@@ -28,7 +28,7 @@ body::after {
 
 #full_img {
   width: 100%;
-  height: 100vh;
+  height: 100%;
   position: relative;
   color: #FFF;
   overflow: hidden;
@@ -258,10 +258,24 @@ footer #contact {
 }
 
 footer #copyright {
-  right: 20px;
-  bottom: 20px;
+  color: #c5c5c5;
+  font-size: 0.8em;
+  display: block;
+  text-align: center;
+  bottom: 15px;
   position: absolute;
-  color: #FFF;
+  width: 100%;
+  margin: 0 auto;
+}
+
+#copyright_login {
+  color: #929292;
+  font-size: 0.9em;
+  text-align: center;
+  bottom: 50px;
+  position: absolute;
+  width: 100%;
+  margin: 0 auto;
 }
 
 input:focus,
