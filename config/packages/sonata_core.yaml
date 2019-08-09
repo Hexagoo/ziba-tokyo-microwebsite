@@ -1,0 +1,9 @@
+sonata_core:
+    form:
+        mapping:
+            enabled: false
+    flashmessage:
+            custom_type: # You can add custom types too
+                css_class: danger
+                types:
+                    - { type: error_new_password }

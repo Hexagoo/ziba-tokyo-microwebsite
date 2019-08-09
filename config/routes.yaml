@@ -1,0 +1,44 @@
+# displayProject:
+#    path: /company/{slug_project}
+#    controller: App\Controller\IndexController::displayProject
+
+homePage:
+   path: /project
+   controller: App\Controller\IndexController::homePage
+
+showProjet:
+   path: /project/{slug_project}
+   controller: App\Controller\IndexController::showProjet
+
+showActivity:
+   path: /project/{slug_project}/{slug_child}
+   controller: App\Controller\IndexController::showActivity
+
+# Admin route
+adminSide:
+  path: /admin
+
+# User managed routes
+login:
+  path: /
+  controller: App\Controller\SecurityController::login
+
+logout:
+    path: /logout
+
+gallery:
+    resource: '@SonataMediaBundle/Resources/config/routing/gallery.xml'
+    prefix: /media/gallery
+
+media:
+    resource: '@SonataMediaBundle/Resources/config/routing/media.xml'
+    prefix: /media
+
+# Ajax call
+newUser:
+    path: /new-user
+    controller: App\Controller\IndexController::newUser
+
+fileDownloaded:
+    path: /file-downloaded
+    controller: App\Controller\IndexController::hasBeenDownloaded

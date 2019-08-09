@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  <div id="container">
+    <div id="head_phase">
+
+      <h1><a href="{{ path('showProjet', {'slug_project': slug_project }) }}"><i class="fas fa-arrow-left"></i></a> {{phase.name}}</h1>
+      <p>{{phase.description}}</p>
+    </div>
+    <div class="activities_container">
+      {% if activities is defined %}
+        {% for activity in activities %}
+          <div class="container_activity">
+            <span class="ac_name">{{ activity.name }}</span>
+            <span class="ac_description">{{ activity.description|nl2br }}</span>
+            {% if activity.activityHasMedias.getValues is not empty %}
+            <span class="ac_files">Files :</span>
+            <div id="file_container">
+              {% for img in activity.activityHasMedias.getValues %}
+                <div class="block_file">
+                  {% set bytes = img.media.size %}
+                  {% set kiloBytes = (bytes / 1024)|round(1) %}
+                  {% set megaBytes = (kiloBytes / 1024)|round(1) %}
+                  {% if img.thumbnailImage is not empty %}
+                    <a class="link_file_thumbnail downloadBtn" value="{{ img.id }}" href="{% path img.media, 'reference' %}" download>
+                      <!-- Downloaded icone animation -->
+                      {% if img.users.getValues is not empty %}
+                        {% if img.users.getValues[0].id == app.user.id %}
+                          <svg class="checkmark thumb_checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"><circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/><path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/></svg>
+                        {% endif %}
+                      {% else %}
+                        <svg class="checkmark_2 thumb_checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"><circle class="checkmark__circle_2" cx="26" cy="26" r="25" fill="none"/><path class="checkmark__check_2" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/></svg>
+                      {% endif %}
+                      <div class="card_file">
+                        <div class="img_block_file">
+                            {% media img.thumbnailImage, 'reference' %}
+                        </div>
+                        <div class="container_file">
+                          {% if img.media.contentType == 'application/pdf' %}<i class="fas fa-file-pdf"></i>{% elseif img.media.contentType == 'application/vnd.ms-excel' %}<i class="fas fa-file-excel"></i>{% elseif (img.media.contentType == 'image/jpeg') or (img.media.contentType == 'image/png') %}<i class="fas fa-file-image"></i>{% else %}<i class="fas fa-file-alt"></i>{% endif %}
+                          <div class="container_file_data">
+                            <span class="file_name">{{ img.media|length > 25 ? img.media|slice(0, 25) ~ '...' : img.media  }}</span>
+                            <span class="file_size">{{ kiloBytes > 1000 ? megaBytes ~ ' MB': kiloBytes ~ ' KB' }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </a>
+                  {% else %}
+                    <a class="link_file downloadBtn" value="{{ img.id }}" href="{% path img.media, 'reference' %}" download>
+                      <!-- Downloaded icone animation -->
+                      {% if img.users.getValues is not empty %}
+                        {% if img.users.getValues[0].id == app.user.id %}
+                          <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"><circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/><path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/></svg>
+                        {% endif %}
+                      {% else %}
+                        <svg class="checkmark_2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"><circle class="checkmark__circle_2" cx="26" cy="26" r="25" fill="none"/><path class="checkmark__check_2" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/></svg>
+                      {% endif %}
+                      {% if img.media.contentType == 'application/pdf' %}<i class="fas fa-file-pdf"></i>{% elseif img.media.contentType == 'application/vnd.ms-excel' %}<i class="fas fa-file-excel"></i>{% elseif (img.media.contentType == 'image/jpeg') or (img.media.contentType == 'image/png') %}<i class="fas fa-file-image"></i>{% else %}<i class="fas fa-file-alt"></i>{% endif %}
+                      <div class="container_file_data">
+                        <span class="file_name">{{ img.media|length > 25 ? img.media|slice(0, 25) ~ '...' : img.media  }}</span>
+                        <span class="file_size">{{ kiloBytes > 1000 ? megaBytes ~ ' MB': kiloBytes ~ ' KB' }}</span>
+                      </div>
+                    </a>
+                  {% endif %}
+                </div>
+              {% endfor %}
+            </div>
+            {% endif %}
+            </div>
+            {% endfor %}
+        {% else %}
+          <div class="message_data">
+              <span>There is not activity for this phase.<br>Please come back later !</span>
+          </div>
+        {% endif %}
+    </div>
+  </div>
+{% endblock %}

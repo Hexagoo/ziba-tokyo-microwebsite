@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  <div id="full_img">
+    <div class="black"></div>
+    <div id="pro_info">
+      <h1>{{ project.name }}</h1>
+      <p>{{ project.description }}</p>
+    </div>
+    {% media project.backgroundImage, 'reference' with {'class': 'back_img'} %}
+  </div>
+  {% if hotTopic is defined %}
+    <div id="ht_container">
+        {% for hot in hotTopic %}
+          {% set className = 'fas ' ~ hot.icon %}
+          <div class="block_ht">
+            <i class="{{className}}"></i>
+            <span>{{hot.title}}</span>
+          </div>
+        {% endfor %}
+    </div>
+  {% endif %}
+  <div id="main_container">
+    <p id="title_container">PROJECT’S PHASES</p>
+    <hr class="line">
+      <div id="cards_container">
+        {% if phases is defined %}
+          {% set id = 0 %}
+          {% for phase in phases %}
+              <a class="block_link newPhase" href="{{ path('showActivity', {'slug_project': slug_project, 'slug_child': phase.slug}) }}">
+                <div class="card">
+                  <div class="img_block">
+                    {% media phase.image, 'reference' with {'class': 'card_img'} %}
+                  </div>
+                  <div class="container">
+                    <span>{{ phase.name }}</span>
+                    <p>{{ phase.description|length > 40 ? phase.description|slice(0, 40) ~ '...' : phase.description  }}</p>
+                    <hr class="line_info_data">
+                    <div class="info_data">
+                      <span>{{ countInfo[id]['nbActivity'] > 1 ? countInfo[id]['nbActivity'] ~ ' activities' : countInfo[id]['nbActivity'] ~ ' activity' }}</span>
+                      <span>{{ countInfo[id]['nbActivity'] <= 1 ? countInfo[id]['nbFile'] ~ ' file' : countInfo[id]['nbFile'] ~ ' files' }}</span>
+                    </div>
+                  </div>
+                </div>
+              </a>
+              {% set id = id + 1 %}
+          {% endfor %}
+        {% else %}
+          <div class="message_data project_page_message">
+              <span>There is not phase for this project.<br>Please come back later !</span>
+          </div>
+        {% endif %}
+      </div>
+  </div>
+{% endblock %}

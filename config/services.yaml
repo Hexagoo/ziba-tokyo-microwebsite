@@ -1,0 +1,82 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/*'
+        exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    App\Controller\:
+        resource: '../src/Controller'
+        tags: ['controller.service_arguments']
+
+    gedmo.listener.sortable:
+        class: Gedmo\Sortable\SortableListener
+        calls:
+            - [setAnnotationReader, ['@annotation_reader']]
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+
+    admin.project:
+        class: App\Admin\ProjectAdmin
+        arguments: [~, App\Entity\Project, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Project }
+
+    admin.phase:
+        class: App\Admin\PhaseAdmin
+        arguments:
+            - ~
+            - App\Entity\Phase
+            - 'PixSortableBehaviorBundle:SortableAdmin' # define the new controller via the third argument
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Phase }
+
+    admin.activity:
+        class: App\Admin\ActivityAdmin
+        arguments:
+            - ~
+            - App\Entity\Activity
+            - 'PixSortableBehaviorBundle:SortableAdmin' # define the new controller via the third argument
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Activity }
+
+    admin.user:
+        class: App\Admin\UserAdmin
+        arguments: [~, App\Entity\User, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: User }
+
+    admin.activity_has_media:
+        class: App\Admin\ActivityHasMediaAdmin
+        arguments: [~, App\Entity\ActivityHasMedia, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Media", label: "Activity media" , show_in_dashboard: false }
+
+    admin.hotTopic:
+        class: App\Admin\HotTopicAdmin
+        arguments: [~, App\Entity\HotTopic, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: HotTopic }
+
+    # Redirect user after loging depending on the role
+    redirect.after.login:
+        # path of the previously created class
+        class: App\Services\AfterLoginRedirection
+        arguments: ['@router']

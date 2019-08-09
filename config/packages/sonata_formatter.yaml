@@ -1,0 +1,4 @@
+# config/packages/sonata_formatter.yaml
+
+# FOSCKEditor
+- { resource: fos_ck_editor.yaml }

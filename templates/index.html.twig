@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+  <!-- If first time for user to access this page -->
+  {% if newUser == false %}
+    <div id="greyBack"></div>
+    <div id="congrat">
+      <div id="congra_text">
+        <h2>Welcome!</h2>
+        <p>***************</br></p>
+      </div>
+      <div id="confirmShipping1">
+        <a href="#" id="removeMessage" class="btn_checkout">OK</a>
+      </div>
+    </div>
+  {% endif %}
+  <div id="main_container">
+    <p id="title_container">HOME PAGE</p>
+    <hr class="line">
+    <div id="counter_project">
+      {% if is_granted('ROLE_ADMIN') %}
+        <span class="form_error_message"><i class="far fa-smile"></i>Because your are Administrator, you have a full access to all the projects.</span>
+      {% else %}
+        <span class="form_error_message">{{ countProjects > 0 ? '<i class="far fa-smile"></i>' : '<i class="far fa-frown"></i>' }} We found <strong>{{countProjects}}</strong> projects for your account.</span>
+      {% endif %}
+    </div>
+    <div id="cards_container_project">
+      {% for project in projects %}
+          <a class="block_link" href="{{ path('showProjet', {'slug_project': project.slug }) }}">
+            <div class="project_card">
+              <div class="project_img_block">
+                <div class="black_projects"></div>
+                <span>{{ project.name }}</span>
+                {% media project.backgroundImage, 'reference' with {'class': 'card_img_home'} %}
+              </div>
+            </div>
+          </a>
+      {% endfor %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Ziba Tokyo{% endblock %}</title>
+        {% block stylesheets %}
+          {{ encore_entry_link_tags('app') }}
+          <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        {% endblock %}
+    </head>
+    <body>
+        {% block body %}
+            {{ form_start(form) }}
+              <div id="form_login">
+                <img id="ziba_logo" src="{{ asset("img/ziba_tokyo.png")}}" alt="">
+                <div class="block_input">
+                  {{ form_label(form._username) }}
+                  {{ form_widget(form._username, {'attr': {'class': 'form-control jquery-focus'}}) }}
+                </div>
+                <div class="block_input">
+                  {{ form_label(form._password) }}
+                  {{ form_widget(form._password, {'attr': {'class': 'form-control jquery-focus'}}) }}
+                </div>
+                <div class="checkbox" id="check_remember_me">
+                    <label>
+                        <input type="checkbox" id="remember_me" name="_remember_me" value="on" />Remember me
+                    </label>
+                </div>
+                <div class="block_input block_submit">
+                  {{ form_widget(form.submit, {'attr': {'class': 'login_btn'}}) }}
+                </div>
+              </div>
+            {{ form_end(form) }}
+            {% if error %}
+                <div id="alert">
+                    <span class="error">Error</span>
+                    <span class="form_error_message">{{ error.messageKey|trans(error.messageData, 'security') }}</span>
+                </div>
+                <!-- <div id="alert_2">
+                    <span class="error">Password</span>
+                    <span class="form_error_message">If you forgot your password, please contact us here. We will send you a new password.</span>
+                </div> -->
+            {% endif %}
+        {% endblock %}
+        {% block javascripts %}
+          {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+    </body>
+</html>

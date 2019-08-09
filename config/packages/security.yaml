@@ -1,0 +1,45 @@
+security:
+   # encoder
+    encoders:
+        App\Entity\User:
+            algorithm: bcrypt
+
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    providers:
+        our_db_provider:
+            entity:
+                class: App\Entity\User
+                property: projectName
+
+    access_decision_manager:
+        strategy: unanimous
+        allow_if_all_abstain: false
+
+    firewalls:
+        main:
+            pattern:   ^/
+            http_basic: ~
+            provider: our_db_provider
+            anonymous: ~
+            form_login:
+                login_path: login
+                check_path: login
+                # csrf_token_generator: security.csrf.token_manager
+                success_handler: redirect.after.login
+            logout:
+                path:  /logout
+                target: /
+            remember_me:
+                secret:   '%kernel.secret%'
+                lifetime: 604800 # 1 week in seconds
+                path:     /
+
+    role_hierarchy:
+        ROLE_ADMIN:      ROLE_USER
+        #ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+        - { path: ^/adminSide, roles: ROLE_ADMIN }
+        - { path: ^/project, roles: ROLE_USER }
