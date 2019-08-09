@@ -2,8 +2,8 @@
 This application has been made with Symfony.
 
 It provides :
-⋅⋅* Administrator site
-⋅⋅* Client site
+* Administrator site
+* Client site
 
 ## Installation
 ```
